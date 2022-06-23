@@ -1,4 +1,82 @@
 
+console.log(barraca);
+
+const containerCartas = document.querySelector(`#containerCartas`)
+const coliseo = document.querySelector(`#coliseo`)
+
+barraca.forEach(heroe => {
+    const div = document.createElement (`div`)
+    div.classList.add(`card`)
+    /* div.setAttribute(onclick="aLaArena(${heroe.id})"); */
+
+    div.innerHTML = ` 
+                <img class="imagenCarta" src=${heroe.img} alt=${heroe.alt}>
+                <h2>${heroe.nombre}</h2>
+                <p>${heroe.info}</p>
+                    <div class="barraEstado">
+                    <span class=atributo id="vida"><img src="./assets/img/heart-solid.svg" alt="vida"> ${heroe.vida}</span>
+                    <span class=atributo id="atk"><img src="./assets/img/hand-fist-solid.svg" alt="atk"> ${heroe.fuerza}</span>
+                    <span class=atributo id="dfs"><img src="./assets/img/shield-halved-solid.svg" alt="dfs"> ${heroe.defensa}</span>
+                    </div>
+                    <img src="./assets/img/dungeon-solid.svg" alt="arena" onclick="aLaArena (${heroe.id})" class="btnDungeon"></img>
+                       
+             `
+    
+             containerCartas.append(div)   
+});
+
+const arena= [];
+
+const aLaArena = (id) => {
+    const pnj= barraca.find( (heroe) => heroe.id === id)
+    if (arena.length<2){
+        arena.push(pnj)
+    }else{
+        arena.pop();
+        arena.push(pnj) 
+    }
+    renderArena();
+   /*  eliminarPersonajeBarraca(); */    
+    console.log(arena)
+
+}
+
+
+const eliminarPersonaje = (id) => {
+    const pnj= arena.find( (heroe) => heroe.id === id)
+    const index= arena.indexOf(pnj)
+    arena.splice(index,1)
+
+    console.log(arena)
+    renderArena()
+
+}
+
+/* const eliminarPersonajeBarraca = (id) => {
+    const pnj= barraca.find( (heroe) => heroe.id === id)
+    const index= barraca.indexOf(pnj)
+    barraca.splice(index,1)
+
+    console.log(barraca)
+} */
+
+
+const renderArena = () =>{
+    coliseo.innerHTML = ""
+    arena.forEach((heroe) => {
+        const div= document.createElement(`div`)
+        div.classList.add(`heroeColiseo`)
+        div.innerHTML= `<img src="${heroe.img}" alt="${heroe.alt}"> 
+            <h2>${heroe.nombre}</h2>
+            <button alt="equis" onclick="eliminarPersonaje (${heroe.id})" class="eliminar"><img src="./assets/img/circle-xmark-solid.svg" alt="equis"></button>
+        ` 
+        coliseo.append(div)      
+    });
+}
+
+
+
+/* 
 // Simulador Rpg
 class heroe{
     constructor(id,nombre,fuerza,defensa,vida){
@@ -41,7 +119,20 @@ jabrony = new heroe(7,"Jabrony",90,40,200);
 
 let barraca = [aquiles,hector,ajax,bruto,hercules,maximo,jabrony]
 let arena = []
-console.log(barraca);
+
+
+const containerCartas = document.querySelector(`#containerCartas`);
+const div= document.createElement(`div`);
+div.classList.add(`card`)
+div.innerHTML = `  <img class="imagenCarta" src=${barraca.img} alt=${barraca.alt}>
+                    <p> Aquiles dios de los mortales y gran patriarca de grecia <hr></p>
+                    <div class="barraEstado">
+                    <span class=atributo id="vida"><img src="./assets/img/heart-solid.svg" alt="vida"> 100</span>
+                    <span class=atributo id="atk"><img src="./assets/img/hand-fist-solid.svg" alt="atk"> 20</span>
+                    <span class=atributo id="dfs"><img src="./assets/img/shield-halved-solid.svg" alt="dfs"> 10</span>
+                    </div> 
+`
+
 
 document.write(`
     ${aquiles.pnjInfo()}<br>
@@ -53,7 +144,7 @@ document.write(`
     ${jabrony.pnjInfo()}<br>
     `);
 
-
+//BUSCADOR
 function aLaArena(id) {
     let pnjId= barraca.find(heroe=>heroe.id==id);
   if(arena.length<2){
@@ -66,10 +157,10 @@ function aLaArena(id) {
 
 //FUNCION ELEGIR PERSONAJE
   aLaArena(3);
-  aLaArena(2);
-  aLaArena(6);
+  aLaArena(2);;
   console.log(arena);
 
+//FILTRO  
 let personajesFuertes = barraca.filter((heroe) => heroe.fuerza > 10)
 console.log(personajesFuertes)
 
