@@ -5,20 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/style.css">
-    <script defer src="/Js/heroes.js"></script>
-    <script defer src="/Js/scripts.js"></script>
     <title>Rpg</title>
 </head>
 <body>
+    
+<section class="coliseo" id="coliseo"></section>
+<div class="fight" id="fight">    
+</div>
+<div class="round" id="round"></div>    
 <main id="containerCartas" class="container">
-    <div class="separador">
-        <h1>Coliseo
-        </h1>
-        <section id="coliseo" class="coliseo">
-        </section>
-    </div>
+
 </main>
+<div class=newcharacter id=new>
+    <form onsubmit="capturarPersonaje(), crearPersonaje()" id="capturarPersonaje">
+        <h2>Crea tu personaje</h2>
+        <label for="name">Nombre:</label><br>
+        <input type="text" id="name" name="name" value="Isildur"><br>
+        <label for="info">Info:</label><br>
+        <input type="textarea" name="info" id="info" value="Rey de Gondor"><br><hr>
+            <label for="life">Vida</label>
+            <input type="number" name="life" id="life" size="40"><br>
+            <label for="strength">Fuerza</label>
+            <input type="number" name="fuerza" id="strength" ><br>
+            <label for="defense">Defensa</label>
+            <input type="number" name="defense" id="defense" ><br>
+            <br><button type="submit">Crear</button>            
+    </form>
+</div>
 
-
+<script src="reentrega.js"></script>
 </body>
 </html>
