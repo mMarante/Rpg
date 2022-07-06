@@ -70,6 +70,7 @@ const roundom= document.querySelector(`#round`)
 
 //Funciones
 function aLaArena(id) {
+    roundom.innerHTML=""
     let pnjId= barraca.find(heroe=>heroe.id==id);
   if(arena.length<2){
     arena.push(pnjId);
@@ -87,7 +88,6 @@ function aLaArena(id) {
 };
 
 function aLaBarraca(id) {
-
     roundom.innerHTML=""
     let pnjId= arena.find(heroe=>heroe.id==id);
         arena.splice(arena.indexOf(pnjId),1);
@@ -95,10 +95,8 @@ function aLaBarraca(id) {
 };
 
 function fight(pnj1,pnj2){
-    const logdom= document.querySelector(`#raund`)
-    let log= document.createElement(`div`);
-    log.classList.add(`fightlog`)
-    logdom.append(log);
+
+    const raund= document.querySelector(`.raund`)    
 
     if(pnj1.atk()>pnj2.dfs()){
         let attackpnj1= (pnj1.atk()-pnj2.dfs());
@@ -107,11 +105,11 @@ function fight(pnj1,pnj2){
         pnj2.vida= pnj2.vida - attackpnj1; 
         console.log(`${pnj1.nombre} ataca ${attackpnj1}`);
         console.log (attackpnj1);
-        log.innerHTML+=`<br>${pnj1.nombre} ataca ${attackpnj1}`}
+        raund.innerHTML+=`<br>${pnj1.nombre} ataca ${attackpnj1}`}
         
     }
     else{
-        log.innerHTML+=`<br>${pnj2.nombre} bloquea a ${pnj1.nombre}`;
+        raund.innerHTML+=`<br>${pnj2.nombre} bloquea a ${pnj1.nombre}`;
     }
 
     if(pnj2.atk()>pnj1.dfs()){
@@ -119,25 +117,24 @@ function fight(pnj1,pnj2){
         if(attackpnj2>0){
         pnj1.vida= pnj1.vida - attackpnj2; 
         console.log(`${pnj2.nombre} ataca ${attackpnj2}`);
-        log.innerHTML+=`<br>${pnj2.nombre} ataca ${attackpnj2}`   } 
+        raund.innerHTML+=`<br>${pnj2.nombre} ataca ${attackpnj2}`   } 
     }
     else{
         console.log(`${pnj1.nombre} bloquea a ${pnj2.nombre}`);
-        log.innerHTML+=`<br>${pnj1.nombre} bloquea a ${pnj2.nombre}`;
+        raund.innerHTML+=`<br>${pnj1.nombre} bloquea a ${pnj2.nombre}`;
 
     }
 
 };
 
 function round(pnj1,pnj2){
-roundom.innerHTML="" 
+console.clear();
 let raund= document.createElement("div")
 raund.classList.add(`raund`)
-raund.setAttribute(`id`,`raund`)
-roundom.append(raund);
-
     let round = 0;
+    
     while(pnj1.vida>=0 && pnj2.vida>=0){
+        roundom.append(raund);
         console.log(`Round: ` + round);
         raund.innerHTML+=`<h2>Round: ${round}<h2>`
         fight(pnj1,pnj2);
@@ -146,11 +143,29 @@ roundom.append(raund);
         raund.innerHTML+=`<br> Vida ${pnj1.nombre}: ${pnj1.vida} <br> Vida ${pnj2.nombre}: ${pnj2.vida}` 
 
         if(pnj1.vida<0){
+            
             raund.innerHTML+=`<div class=ganador><H1>Gano ${pnj2.nombre}</H1><img src=${pnj2.img}></div>`
+            Swal.fire({
+                timer: 3000,
+                showConfirmButton: false,
+                imageUrl: `${pnj2.img}`,
+                imageHeight: `300px`,
+                title: `${pnj2.nombre} Triunfador`,
+                text: `${pnj2.nombre} se impuso en una feroz batalla frente a ${pnj1.nombre}`,
+              })
         }else if (pnj2.vida<0){
             raund.innerHTML+=`<div class=ganador><H1>Gano ${pnj1.nombre}</H1><img src=${pnj1.img}></div>`
+            Swal.fire({
+                timer: 3000,
+                showConfirmButton: false,
+                imageUrl: `${pnj1.img}`,
+                imageHeight: `300px`,
+                title: `${pnj1.nombre} Triunfador`,
+                text: `${pnj1.nombre} se impuso en una feroz batalla frente a ${pnj2.nombre}`,
+              })
         }else{
             round++;
+            roundom.append(raund);
         }
 
 
@@ -197,7 +212,16 @@ const renderArena = () =>{
 
         const div= document.createElement(`div`)
         div.classList.add(`vs`)
-        div.setAttribute("onclick",`round(arena[0],arena[1])`);
+        div.setAttribute("onclick",`Swal.fire({
+            imageUrl: "./assets/img/arena.jpg",
+            title: 'Preparado?',
+            text: 'Los guerreros se preparan para salir a la arena',
+            confirmButtonText: 'A LA ARENA',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              round(arena[0],arena[1])
+            }
+          })`);
         div.innerHTML=`<h1>LUCHA</h1>`
         vs.innerHTML=''
         vs.append(div);
@@ -215,7 +239,7 @@ function capturarPersonaje(){
     let fuerza = document.getElementById("strength").value;
     let defensa = document.getElementById("defense").value;
 
-  let heroeCustom = { id: barraca.length + 1,
+  let heroeCustom = {   id: barraca.length + 1,
                         nombre: nombre,
                         vida: vida,
                         fuerza: fuerza,
@@ -231,98 +255,19 @@ function capturarPersonaje(){
 function crearPersonaje(){
     const storage = JSON.parse(localStorage.getItem("heroe"));
     console.log(storage)
-    console.log(storage.nombre)
     const heroeCustom = storage.nombre = new heroe (storage.id,storage.nombre,storage.fuerza,storage.defensa,storage.vida,storage.img,"heroecustom",storage.info);
-    barraca.push(heroeCustom);
+    barraca.push(heroeCustom)
     renderBarraca();
+    Toastify({
+        text: `${heroeCustom.nombre} se une a la Lucha!!`,
+        duration: 3000,
+        gravity: "top",
+        position: "left",
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+      }).showToast();
 }
-
 
 
 renderBarraca();
-
-
-/* 
-
-function empezar(){
-    if((prompt("Empezamos? S/N (may)")) == "S"){
-        alert("vamo a juga")
-        return showInfo(), elegir();}else{alert("Para jugar ponele S mayuscula!!!")}    
-}
-
-empezar()
-//FUNCION ELEGIR PERSONAJE
-
-function elegir(){
-    aLaArena(prompt("Id personaje 1"));
-    aLaArena(prompt("Id personaje 2"));
-}
-  
-  console.log(arena);
-
-//FILTRO  
-let personajesFuertes = barraca.filter((heroe) => heroe.fuerza > 10)
-console.log(personajesFuertes)
-
-  let round= 0;  
-  let pnj1 = arena[0];
-  let pnj2 = arena[1];
-  let vidaPnj1 = pnj1.vida;
-  let vidaPnj2 = pnj2.vida;
-  
-console.log(pnj1.ataque());
-console.log(pnj1.bloqueo());
-
-function pelea(){
-    return vidaPnj1 > 0 && vidaPnj2 > 0
-};
-
-
-function atk(){
-    if(pnj1.ataque()>pnj2.bloqueo()){
-        vidaPnj2= vidaPnj2 - (pnj1.ataque() - pnj2.bloqueo()); 
-        console.log(`${pnj1.nombre} ataca ${pnj1.ataque()}`);    
-    }
-    else{
-        console.log(`${pnj2.nombre} bloquea a ${pnj1.nombre}`);
-    }
-
-
-    if(pnj2.ataque()>pnj1.bloqueo()){
-        vidaPnj1= vidaPnj1 - (pnj2.ataque() - pnj1.bloqueo()); 
-        console.log(`${pnj2.nombre} ataca ${pnj2.ataque()}`);    
-    }
-    else{
-        console.log(`${pnj1.nombre} bloquea a ${pnj2.nombre}`);
-    }
-
-};
- */
-
-
-
-/* while(pelea()){
-    round++;
-    console.log("Round: " + round);
-    atk();
-    console.log (`vida ${pnj1.nombre}:` + vidaPnj1);
-    console.log (`vida ${pnj2.nombre}:` + vidaPnj2);
-};
- */
-
-
-/* function ganador(){
-    return vidaPnj1<0
-};
-
- */
-
-/* if(ganador()){
-    console.log(`Gano ${pnj2.nombre}`);
-    document.write(`Felicitaciones ${pnj2.nombre}`);
-}else{
-    console.log(`Gano ${pnj1.nombre}`);
-    document.write(`Felicitaciones ${pnj1.nombre}`);
-}
-
- */
