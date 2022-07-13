@@ -269,5 +269,22 @@ function crearPersonaje(){
       }).showToast();
 }
 
+quote= document.querySelector("#quote")
+
+fetch("http://quotable.io/random")
+        .then(res => res.json())
+        .then(data => {
+        quote.innerHTML = `<p class=quote>${data.content}<br>${data.author}</p><br>`})
+
+
+    setInterval(() =>{
+        fetch("http://quotable.io/random")
+        .then(res => res.json())
+        .then(data => {
+        quote.innerHTML = `<p class=quote>${data.content}<br>${data.author}</p><br>`})
+    }, 23000)
+    
+   
+
 
 renderBarraca();

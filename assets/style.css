@@ -203,3 +203,25 @@ border: #4C3A51 solid 3px;}
     margin: 20px 0px 10px ;
     border: #4C3A51 1px solid;
 }
+
+.header{padding: 10px;
+text-align: center;
+background-image: url(./img/header.jpg);
+background-repeat: no-repeat;
+background-size: cover;
+background-position: bottom;
+margin-bottom: 15px;
+font-family: 'Times New Roman', Times, serif;
+font-weight: bold;
+font-style: italic;}
+
+.header h1{ letter-spacing: 20px;
+color: #4C3A51;
+text-shadow: #4C3A51 0px 10px 5px;
+font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;}
+
+.quote{ letter-spacing: 5px;
+padding: 10px;
+background-color: #e7ab7941;
+backdrop-filter: blur(10px);
+line-height: 30px;}
