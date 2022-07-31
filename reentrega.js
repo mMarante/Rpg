@@ -1,5 +1,5 @@
 
-// Simulador Rpg
+// BASE SIMULADOR RPG
 class heroe{
     constructor(id,nombre,fuerza,defensa,vida,img,alt,info){
         this.id=id;
@@ -48,41 +48,26 @@ teseo = new heroe(7,"Teseo",90,40,200,"./assets/img/Teseo.jpg","Foto-Teseo","Luc
 let barraca = [aquiles,hector,ajax,leonidas,hercules,maximo,teseo]
 let arena = []
 
-
-function showInfo(){
-document.write(`
-    ${aquiles.pnjInfo()}<br>
-    ${hector.pnjInfo()}<br>
-    ${ajax.pnjInfo()}<br>
-    ${leonidas.pnjInfo()}<br>
-    ${hercules.pnjInfo()}<br>
-    ${maximo.pnjInfo()}<br>
-    ${teseo.pnjInfo()}<br>
-    `)};
+//////////////////////////////////////////////////////////////////
 
 
- // DOM
-const containerCartas = document.querySelector(`#containerCartas`)
-const coliseo = document.querySelector(`#coliseo`)
-const vs= document.querySelector(`#fight`)
-const roundom= document.querySelector(`#round`)    
+ // FUNCIONES BASICAS
 
-
-//Funciones
-function aLaArena(id) {
-    roundom.innerHTML=""
-    let pnjId= barraca.find(heroe=>heroe.id==id);
-  if(arena.length<2){
-    arena.push(pnjId);
-    barraca.splice(barraca.indexOf(pnjId),1);
-}
-    else{
-        barraca.push(arena[1]);
-        arena.pop(pnjId);
-        arena.push(pnjId);
-        barraca.splice(barraca.indexOf(pnjId),1);
-    }
-
+ 
+ function aLaArena(id) {
+     roundom.innerHTML=""
+     let pnjId= barraca.find(heroe=>heroe.id==id);
+     if(arena.length<2){
+         arena.push(pnjId);
+         barraca.splice(barraca.indexOf(pnjId),1);
+        }
+        else{
+            barraca.push(arena[1]);
+            arena.pop(pnjId);
+            arena.push(pnjId);
+            barraca.splice(barraca.indexOf(pnjId),1);
+        }
+        
     console.log(arena);
     console.log(barraca);
 };
@@ -90,58 +75,58 @@ function aLaArena(id) {
 function aLaBarraca(id) {
     roundom.innerHTML=""
     let pnjId= arena.find(heroe=>heroe.id==id);
-        arena.splice(arena.indexOf(pnjId),1);
-        barraca.push(pnjId);
+    arena.splice(arena.indexOf(pnjId),1);
+    barraca.push(pnjId);
 };
 
 function fight(pnj1,pnj2){
-
+    
     const raund= document.querySelector(`.raund`)    
-
+    
     if(pnj1.atk()>pnj2.dfs()){
         let attackpnj1= (pnj1.atk()-pnj2.dfs());
-
-        if(attackpnj1>0){
-        pnj2.vida= pnj2.vida - attackpnj1; 
-        console.log(`${pnj1.nombre} ataca ${attackpnj1}`);
-        console.log (attackpnj1);
-        raund.innerHTML+=`<br>${pnj1.nombre} ataca ${attackpnj1}`}
         
-    }
-    else{
-        raund.innerHTML+=`<br>${pnj2.nombre} bloquea a ${pnj1.nombre}`;
-    }
-
-    if(pnj2.atk()>pnj1.dfs()){
-        let attackpnj2= (pnj2.atk()-pnj1.dfs());
-        if(attackpnj2>0){
-        pnj1.vida= pnj1.vida - attackpnj2; 
-        console.log(`${pnj2.nombre} ataca ${attackpnj2}`);
-        raund.innerHTML+=`<br>${pnj2.nombre} ataca ${attackpnj2}`   } 
-    }
-    else{
-        console.log(`${pnj1.nombre} bloquea a ${pnj2.nombre}`);
-        raund.innerHTML+=`<br>${pnj1.nombre} bloquea a ${pnj2.nombre}`;
-
-    }
-
-};
-
+        if(attackpnj1>0){
+            pnj2.vida= pnj2.vida - attackpnj1; 
+            console.log(`${pnj1.nombre} ataca ${attackpnj1}`);
+            console.log (attackpnj1);
+            raund.innerHTML+=`<br>${pnj1.nombre} ataca ${attackpnj1}`}
+            
+        }
+        else{
+            raund.innerHTML+=`<br>${pnj2.nombre} bloquea a ${pnj1.nombre}`;
+        }
+        
+        if(pnj2.atk()>pnj1.dfs()){
+            let attackpnj2= (pnj2.atk()-pnj1.dfs());
+            if(attackpnj2>0){
+                pnj1.vida= pnj1.vida - attackpnj2; 
+                console.log(`${pnj2.nombre} ataca ${attackpnj2}`);
+                raund.innerHTML+=`<br>${pnj2.nombre} ataca ${attackpnj2}`   } 
+            }
+            else{
+                console.log(`${pnj1.nombre} bloquea a ${pnj2.nombre}`);
+                raund.innerHTML+=`<br>${pnj1.nombre} bloquea a ${pnj2.nombre}`;
+                
+            }
+            
+        };
+        
 function round(pnj1,pnj2){
-console.clear();
-let raund= document.createElement("div")
-raund.classList.add(`raund`)
-    let round = 0;
-    
-    while(pnj1.vida>=0 && pnj2.vida>=0){
-        roundom.append(raund);
-        console.log(`Round: ` + round);
+            console.clear();
+            let raund= document.createElement("div")
+            raund.classList.add(`raund`)
+            let round = 0;
+            
+            while(pnj1.vida>=0 && pnj2.vida>=0){
+                roundom.append(raund);
+                console.log(`Round: ` + round);
         raund.innerHTML+=`<h2>Round: ${round}<h2>`
         fight(pnj1,pnj2);
         console.log(`Vida ${pnj1.nombre}: ${pnj1.vida}`)
         console.log(`Vida ${pnj2.nombre}: ${pnj2.vida}`)
         raund.innerHTML+=`<br> Vida ${pnj1.nombre}: ${pnj1.vida} <br> Vida ${pnj2.nombre}: ${pnj2.vida}` 
-
+        
         if(pnj1.vida<0){
             
             raund.innerHTML+=`<div class=ganador><H1>Gano ${pnj2.nombre}</H1><img src=${pnj2.img}></div>`
@@ -152,7 +137,7 @@ raund.classList.add(`raund`)
                 imageHeight: `300px`,
                 title: `${pnj2.nombre} Triunfador`,
                 text: `${pnj2.nombre} se impuso en una feroz batalla frente a ${pnj1.nombre}`,
-              })
+            })
         }else if (pnj2.vida<0){
             raund.innerHTML+=`<div class=ganador><H1>Gano ${pnj1.nombre}</H1><img src=${pnj1.img}></div>`
             Swal.fire({
@@ -162,29 +147,38 @@ raund.classList.add(`raund`)
                 imageHeight: `300px`,
                 title: `${pnj1.nombre} Triunfador`,
                 text: `${pnj1.nombre} se impuso en una feroz batalla frente a ${pnj2.nombre}`,
-              })
+            })
         }else{
             round++;
             roundom.append(raund);
         }
-
-
+        
+        
     }
 };
+//////////////////////////////////////////////////////////////////////
+
+
+// DOM
+
+const containerCartas = document.querySelector(`#containerCartas`)
+const coliseo = document.querySelector(`#coliseo`)
+const vs= document.querySelector(`#fight`)
+const roundom= document.querySelector(`#round`)    
 
 const renderBarraca = () =>{
-
-containerCartas.innerHTML=""
-barraca.forEach((heroe) => {
-    const div = document.createElement("div");
-    div.classList.add('card');
-    div.setAttribute("onclick",`aLaArena(${(heroe.id)}),renderArena(),renderBarraca()`);
-div.innerHTML = `
+    
+    containerCartas.innerHTML=""
+    barraca.forEach((heroe) => {
+        const div = document.createElement("div");
+        div.classList.add('card');
+        div.setAttribute("onclick",`aLaArena(${(heroe.id)}),renderArena(),renderBarraca()`);
+        div.innerHTML = `
         
         <div class="img"><img src=${heroe.img} alt=${heroe.alt}></div>
-    
+        
         <div class="info"><p><H2>${heroe.nombre}</H2>${heroe.info}</p></div>
-    
+        
         <div class="stats">
         <span><img src="./assets/img/icons/heart-solid.svg"alt="vida"><p>${heroe.vida}</p></span>
         <span><img src="./assets/img/icons/hand-fist-solid.svg"alt="fuerza"><p>${heroe.fuerza}</p></span>
@@ -229,6 +223,9 @@ const renderArena = () =>{
         vs.innerHTML=""
     }
 };
+//////////////////////////////////////////////////////////////////////
+
+// CREAR PERSONAJE DESDE FORM
 
 function capturarPersonaje(){
     event.preventDefault();
@@ -252,6 +249,7 @@ function capturarPersonaje(){
    
 }
 
+
 function crearPersonaje(){
     const storage = JSON.parse(localStorage.getItem("heroe"));
     console.log(storage)
@@ -268,6 +266,9 @@ function crearPersonaje(){
         },
       }).showToast();
 }
+//////////////////////////////////////////////////////////////////////
+
+//HEADER DE FRASES //
 
 quote= document.querySelector("#quote")
 
